@@ -1,4 +1,5 @@
-﻿using System.DirectoryServices;
+﻿using System;
+using System.DirectoryServices;
 using System.Web.Mvc;
 
 namespace DirEx.Controllers
@@ -9,9 +10,25 @@ namespace DirEx.Controllers
 		{			
 			var viewModel = new Models.DirectoryViewModel();
 
-			var root = "dc=system,dc=backend";
-            var dir = new DirectoryEntry("LDAP://idfdemo.dev.idmworks.net:6389/" + root);
-			dir.AuthenticationType = AuthenticationTypes.Anonymous;
+			var root = "dc=racf,dc=com";
+			var host = "idfdemo.dev.idmworks.net";
+			var port = 6389;
+			var username = "cn=idfRacfAdmin,dc=racf,dc=com";
+			var password = "idfRacfPwd";
+
+			var server = "LDAP://" + host + ":" + port + "/";
+
+			var dir = new DirectoryEntry(server + root);
+			if (String.IsNullOrEmpty(username))
+			{
+				dir.AuthenticationType = AuthenticationTypes.Anonymous;
+			}
+			else
+			{
+				dir.Username = username;
+				dir.Password = password;
+				dir.AuthenticationType = AuthenticationTypes.ServerBind;
+			}
 
 			var searcher = new DirectorySearcher(dir);
 			searcher.SearchScope = SearchScope.OneLevel;
