@@ -25,8 +25,13 @@ namespace DirEx.Controllers
 			{
 				var child = result.GetDirectoryEntry();
 				var entry = new Models.EntryViewModel();
-				entry.RelativeName = child.Name;
-				entry.DistinguishedName = entry.RelativeName + "," + viewModel.DistinguishedName;
+
+				// not accessing child.Name directly here as the object may be a malformed LDAP entry
+				// this is currently the case with the RACF connector and ou=Aliases
+				// this will at least let us populate the entry and we can error fetching details later
+				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - viewModel.DistinguishedName.Length - 1);
+
+                entry.DistinguishedName = entry.RelativeName + "," + viewModel.DistinguishedName;
 				viewModel.Entries.Add(entry);
 			}
 			
