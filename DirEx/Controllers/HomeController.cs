@@ -11,10 +11,12 @@ namespace DirEx.Controllers
 		private const int port = 6389;
 		private const string username = "cn=idfRacfAdmin,dc=racf,dc=com";
 		private const string password = "idfRacfPwd";
+		private const string rootDn = "dc=racf,dc=com";
 
-		public ActionResult Index()
+		public ActionResult Index(string baseDn = "")
 		{
-			var baseDn = "dc=racf,dc=com";
+			if (String.IsNullOrEmpty(baseDn))
+				baseDn = rootDn;
 
 			var viewModel = PopulateDirectoryEntries(baseDn);
 

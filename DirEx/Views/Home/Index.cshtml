@@ -12,7 +12,7 @@
 		@foreach (var entry in entries)
 		{
 			<li>
-				@entry.RelativeName
+				@Html.ActionLink(entry.RelativeName, "index", new { baseDn = @entry.DistinguishedName })
 				@if (entry.Entries.Any())
 				{
 					@ShowTree(entry.Entries)
