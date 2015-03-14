@@ -4,20 +4,27 @@
     ViewBag.Title = "Index";
 }
 
-@ShowTree(Model.Entries)
+<div class="sidebar">
 
-@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries)
-{
-	<ul>
+		@ShowTree(Model.Entries, true)
+</div>
+<div class="content">
+
+</div>
+
+
+	@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries, bool root = false)
+	{
+	<ul class="list-group">
 		@foreach (var entry in entries)
 		{
-			<li>
-				@Html.ActionLink(entry.RelativeName, "index", new { baseDn = @entry.DistinguishedName })
-				@if (entry.Entries.Any())
-				{
-					@ShowTree(entry.Entries)
-				}
-			</li>
+		<li class="list-group-item">
+			@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
+			@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
+			{
+				@ShowTree(entry.Entries)
+			}
+		</li>
 		}
 	</ul>
 }
