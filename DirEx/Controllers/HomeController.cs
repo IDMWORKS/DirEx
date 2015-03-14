@@ -9,27 +9,52 @@ namespace DirEx.Controllers
 	{
 		private const string host = "idfdemo.dev.idmworks.net";
 		private const int port = 6389;
-		private const string username = "cn=idfRacfAdmin,dc=racf,dc=com";
-		private const string password = "idfRacfPwd";
-		private const string rootDn = "dc=racf,dc=com";
 
-		public ActionResult Index(string baseDn = "")
+		private const string baseDn = "dc=system,dc=backend";
+		private const string username = "cn=Directory Manager,dc=system,dc=backend";
+		private const string password = "testpass";
+
+		private readonly string server = "LDAP://" + host + ":" + port + "/";
+
+		public ActionResult Index(string currentDn = "")
 		{
-			if (String.IsNullOrEmpty(baseDn))
-				baseDn = rootDn;
+			string cacheKey = GetDirectoryCacheKey(server, username, baseDn);
+			DirectoryViewModel viewModel = new DirectoryViewModel();
 
-			var viewModel = PopulateDirectoryEntries(baseDn);
+			if (!String.IsNullOrEmpty(currentDn))
+			{
+				// we must have a cached DirectoryViewModel			
+				viewModel = (DirectoryViewModel)HttpContext.Cache[cacheKey];
+				if (viewModel == null)
+					// otherwise clear out currentDn	
+					currentDn = "";
+			}
+
+			if (String.IsNullOrEmpty(currentDn))
+				currentDn = baseDn;
+
+			var populated = false;
+			if (viewModel.EntryMap.ContainsKey(currentDn))
+				populated = viewModel.EntryMap[currentDn].Entries.Count > 0;
+
+			if (!populated)
+				PopulateDirectoryEntries(currentDn, viewModel);
+
+			// cache asset data for 30min sliding
+			HttpContext.Cache.Insert(cacheKey, viewModel, null,
+				System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30));
 
 			return View(viewModel);
 		}
 
-		private DirectoryViewModel PopulateDirectoryEntries(string baseDn)
+		private string GetDirectoryCacheKey(string server, string username, string baseDn)
 		{
-			var viewModel = new DirectoryViewModel();
+			return String.Format("{0}-{1}-{2}", server, username, baseDn);
+		}
 
-			var server = "LDAP://" + host + ":" + port + "/";
-
-			var dir = new DirectoryEntry(server + baseDn);
+		private void PopulateDirectoryEntries(string currentDn, DirectoryViewModel viewModel)
+		{			
+			var dir = new DirectoryEntry(server + currentDn);
 			if (String.IsNullOrEmpty(username))
 				dir.AuthenticationType = AuthenticationTypes.Anonymous;
 			else
@@ -44,26 +69,37 @@ namespace DirEx.Controllers
 
 			var results = searcher.FindAll();
 
-			var rootEntry = new EntryViewModel();
-			rootEntry.DistinguishedName = baseDn;
-			rootEntry.RelativeName = dir.Name;
-			viewModel.Entries.Add(rootEntry);
+			EntryViewModel parent;
+			if (viewModel.EntryMap.ContainsKey(currentDn))
+			{
+				parent = viewModel.EntryMap[currentDn];
+			}
+			else
+			{
+				parent = new EntryViewModel();
+				parent.DistinguishedName = currentDn;
+				parent.RelativeName = dir.Name;
+				viewModel.Entries.Add(parent);
+				viewModel.EntryMap[parent.DistinguishedName] = parent;
+			}
 
 			foreach (SearchResult result in results)
 			{
 				var child = result.GetDirectoryEntry();
+				if (child.Path.Equals(server + parent.DistinguishedName))
+					continue;
+
 				var entry = new EntryViewModel();
 
 				// not accessing child.Name directly here as the object may be a malformed LDAP entry
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
-				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - rootEntry.DistinguishedName.Length - 1);
+				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - parent.DistinguishedName.Length - 1);
 
-				entry.DistinguishedName = entry.RelativeName + "," + rootEntry.DistinguishedName;
-				rootEntry.Entries.Add(entry);
+				entry.DistinguishedName = entry.RelativeName + "," + parent.DistinguishedName;
+				parent.Entries.Add(entry);
+				viewModel.EntryMap[entry.DistinguishedName] = entry;
 			}
-
-			return viewModel;
 		}
 	}
 }
