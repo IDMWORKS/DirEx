@@ -21,13 +21,13 @@ namespace DirEx.Controllers
 			return View(viewModel);
 		}
 
-		private DirectoryViewModel PopulateDirectoryEntries(string root)
+		private DirectoryViewModel PopulateDirectoryEntries(string baseDn)
 		{
 			var viewModel = new DirectoryViewModel();
 
 			var server = "LDAP://" + host + ":" + port + "/";
 
-			var dir = new DirectoryEntry(server + root);
+			var dir = new DirectoryEntry(server + baseDn);
 			if (String.IsNullOrEmpty(username))
 				dir.AuthenticationType = AuthenticationTypes.Anonymous;
 			else
@@ -42,8 +42,10 @@ namespace DirEx.Controllers
 
 			var results = searcher.FindAll();
 
-			viewModel.DistinguishedName = root;
-			viewModel.RelativeName = dir.Name;
+			var rootEntry = new EntryViewModel();
+			rootEntry.DistinguishedName = baseDn;
+			rootEntry.RelativeName = dir.Name;
+			viewModel.Entries.Add(rootEntry);
 
 			foreach (SearchResult result in results)
 			{
@@ -53,10 +55,10 @@ namespace DirEx.Controllers
 				// not accessing child.Name directly here as the object may be a malformed LDAP entry
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
-				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - viewModel.DistinguishedName.Length - 1);
+				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - rootEntry.DistinguishedName.Length - 1);
 
-				entry.DistinguishedName = entry.RelativeName + "," + viewModel.DistinguishedName;
-				viewModel.Entries.Add(entry);
+				entry.DistinguishedName = entry.RelativeName + "," + rootEntry.DistinguishedName;
+				rootEntry.Entries.Add(entry);
 			}
 
 			return viewModel;

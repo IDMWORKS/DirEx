@@ -4,12 +4,20 @@
     ViewBag.Title = "Index";
 }
 
-<p>@Model.RelativeName</p>
-<p>@Model.DistinguishedName</p>
+@ShowTree(Model.Entries)
 
-@foreach (var child in Model.Entries)
+@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries)
 {
-	<p>@child.RelativeName</p>
-	<p>@child.DistinguishedName</p>
+	<ul>
+		@foreach (var entry in entries)
+		{
+			<li>
+				@entry.RelativeName
+				@if (entry.Entries.Any())
+				{
+					@ShowTree(entry.Entries)
+				}
+			</li>
+		}
+	</ul>
 }
-
