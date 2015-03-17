@@ -2,11 +2,18 @@
 	margin-top: 50px;
 }
 
+.list-group-item:last-child {
+	margin-bottom: -15px;
+}
+
+section > .list-group > .list-group-item:first-child {
+	border: none;
+}
+
 .sidebar {
   left: 0;
   top: 50px;
   bottom: 0;
-  padding: 10px;
   position: fixed;
   width: 300px;
   overflow: scroll;

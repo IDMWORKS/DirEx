@@ -1,4 +1,7 @@
-﻿@model DirEx.Models.DirectoryViewModel
+﻿@using DirEx.Keys
+@using DirEx.Models
+
+@model DirectoryViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -20,13 +23,16 @@
 	}
 </section>
 
-@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries, bool root = false)
+@helper ShowTree(ICollection<EntryViewModel> entries, bool root = false)
 {
 <ul class="list-group">
 	@foreach (var entry in entries)
 	{
-	<li class="list-group-item">
-		@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
+	var entryExpands = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
+	var extraClass = Request.Params.AllKeys.Contains(RequestParams.CurrentDn) && Request.Params[RequestParams.CurrentDn].Equals(entry.DistinguishedName) ? "list-group-item-info" : String.Empty;
+
+	<li class="list-group-item @extraClass">
+		@if (entryExpands)
 		{
 			<i class="fa fa-caret-down"></i>
 		}
@@ -35,7 +41,7 @@
 			<i class="fa fa-caret-right"></i>
 		}
 		@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
-		@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
+		@if (entryExpands)
 		{
 			@ShowTree(entry.Entries)
 		}
