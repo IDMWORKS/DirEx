@@ -19,6 +19,14 @@
 		@foreach (var entry in entries)
 		{
 		<li class="list-group-item">
+			@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
+			{
+				<i class="fa fa-caret-down"></i>
+			}
+			else
+			{
+				<i class="fa fa-caret-right"></i>
+			}
 			@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
 			@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
 			{
