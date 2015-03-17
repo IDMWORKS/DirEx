@@ -25,6 +25,8 @@ namespace DirEx.Controllers
 			string cacheKey = GetDirectoryCacheKey(server, username, baseDn);
 			DirectoryViewModel viewModel = new DirectoryViewModel();
 
+			viewModel.Server = server;
+
 			if (!String.IsNullOrEmpty(currentDn))
 			{
 				// we must have a cached DirectoryViewModel			
