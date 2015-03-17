@@ -4,11 +4,10 @@
     ViewBag.Title = "Index";
 }
 
-<div class="sidebar">
-
-		@ShowTree(Model.Entries, true)
-</div>
-<div class="content">
+<section class="sidebar">
+	@ShowTree(Model.Entries, true)
+</section>
+<section class="content">
 	@if (Model.CurrentEntry != null)
 	{
 		<dl class="dl-horizontal">
@@ -19,29 +18,28 @@
 			}
 		</dl>
 	}
-</div>
+</section>
 
-
-	@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries, bool root = false)
+@helper ShowTree(ICollection<DirEx.Models.EntryViewModel> entries, bool root = false)
+{
+<ul class="list-group">
+	@foreach (var entry in entries)
 	{
-	<ul class="list-group">
-		@foreach (var entry in entries)
+	<li class="list-group-item">
+		@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
 		{
-		<li class="list-group-item">
-			@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
-			{
-				<i class="fa fa-caret-down"></i>
-			}
-			else
-			{
-				<i class="fa fa-caret-right"></i>
-			}
-			@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
-			@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
-			{
-				@ShowTree(entry.Entries)
-			}
-		</li>
+			<i class="fa fa-caret-down"></i>
 		}
-	</ul>
+		else
+		{
+			<i class="fa fa-caret-right"></i>
+		}
+		@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
+		@if (entry.Entries.Any() && (root || (Request.Params["currentDn"].EndsWith(entry.DistinguishedName))))
+		{
+			@ShowTree(entry.Entries)
+		}
+	</li>
+	}
+</ul>
 }
