@@ -1,8 +1,11 @@
 ﻿using DirEx.Extensions;
 using DirEx.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.DirectoryServices;
 using System.Web.Mvc;
+using System.Text;
 
 namespace DirEx.Controllers
 {
@@ -41,6 +44,8 @@ namespace DirEx.Controllers
 			if (!populated)
 				PopulateDirectoryEntries(currentDn, viewModel);
 
+			viewModel.CurrentEntry = viewModel.EntryMap[currentDn];
+
 			// cache asset data for 30min sliding
 			HttpContext.Cache.Insert(cacheKey, viewModel, null,
 				System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30));
@@ -70,7 +75,13 @@ namespace DirEx.Controllers
 
 			var results = searcher.FindAll();
 
+			ApplySearchResults(dir, results, viewModel);
+		}
+
+		private void ApplySearchResults(DirectoryEntry dir, SearchResultCollection results, DirectoryViewModel viewModel)
+		{
 			EntryViewModel parent;
+			var currentDn = dir.Path.Substring(server.Length);
 			if (viewModel.EntryMap.ContainsKey(currentDn))
 			{
 				parent = viewModel.EntryMap[currentDn];
@@ -86,8 +97,7 @@ namespace DirEx.Controllers
 
 			foreach (SearchResult result in results)
 			{
-				var child = result.GetDirectoryEntry();
-				if (child.Path.Equals(server + parent.DistinguishedName))
+				if (result.Path.Equals(server + parent.DistinguishedName))
 					continue;
 
 				var entry = new EntryViewModel();
@@ -96,12 +106,22 @@ namespace DirEx.Controllers
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
 				// may have spaces too, e.g.: "LDAP://idfdemo.dev.idmworks.net:6389/ou=as400, ou=People, dc=system,dc=backend"
-				var entryDn = child.Path.Substring(server.Length);
+				var entryDn = result.Path.Substring(server.Length);
 				entry.RelativeName = entryDn.GetRdn(parent.DistinguishedName);
 
 				entry.DistinguishedName = entry.RelativeName + "," + parent.DistinguishedName;
 				parent.Entries.Add(entry);
 				viewModel.EntryMap[entry.DistinguishedName] = entry;
+
+				foreach (string name in result.Properties.PropertyNames)
+				{
+					var values = result.Properties[name];
+					foreach (object value in values)
+					{
+						var propValue = value is Byte[] ? Encoding.UTF8.GetString((Byte[])value) : value.ToString();
+						entry.AttributeValues.Add(new Tuple<string, string>(name, propValue));
+					}
+				}
 			}
 		}
 	}

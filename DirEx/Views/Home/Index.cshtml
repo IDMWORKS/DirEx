@@ -9,7 +9,16 @@
 		@ShowTree(Model.Entries, true)
 </div>
 <div class="content">
-
+	@if (Model.CurrentEntry != null)
+	{
+		<dl class="dl-horizontal">
+			@foreach (var attributeValue in Model.CurrentEntry.AttributeValues)
+			{
+				<dt>@attributeValue.Item1</dt>
+				<dd>@attributeValue.Item2</dd>
+			}
+		</dl>
+	}
 </div>
 
 
