@@ -1,5 +1,5 @@
 ﻿body {
-	margin-top: 50px;
+	margin-top: 64px;
 }
 
 .list-group-item:last-child {
@@ -12,7 +12,7 @@ section > .list-group > .list-group-item:first-child {
 
 .sidebar {
   left: 0;
-  top: 50px;
+  top: 64px;
   bottom: 0;
   position: fixed;
   width: 300px;
