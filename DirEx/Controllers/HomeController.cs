@@ -1,7 +1,8 @@
-﻿using System;
+﻿using DirEx.Extensions;
+using DirEx.Models;
+using System;
 using System.DirectoryServices;
 using System.Web.Mvc;
-using DirEx.Models;
 
 namespace DirEx.Controllers
 {
@@ -94,7 +95,9 @@ namespace DirEx.Controllers
 				// not accessing child.Name directly here as the object may be a malformed LDAP entry
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
-				entry.RelativeName = child.Path.Substring(server.Length, child.Path.Length - server.Length - parent.DistinguishedName.Length - 1);
+				// may have spaces too, e.g.: "LDAP://idfdemo.dev.idmworks.net:6389/ou=as400, ou=People, dc=system,dc=backend"
+				var entryDn = child.Path.Substring(server.Length);
+				entry.RelativeName = entryDn.GetRdn(parent.DistinguishedName);
 
 				entry.DistinguishedName = entry.RelativeName + "," + parent.DistinguishedName;
 				parent.Entries.Add(entry);
