@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22512.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirEx.Web", "DirEx\DirEx.Web.csproj", "{E2721043-2689-4138-A153-795345458068}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirEx.Web", "DirEx.Web\DirEx.Web.csproj", "{E2721043-2689-4138-A153-795345458068}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirEx.Ldap", "DirEx.Ldap\DirEx.Ldap.csproj", "{269CED00-9C0A-4924-963F-8426108641CD}"
 EndProject
