@@ -1,4 +1,4 @@
-﻿namespace DirEx.Keys
+﻿namespace DirEx.Web.Keys
 {
 	public class RequestParams
 	{

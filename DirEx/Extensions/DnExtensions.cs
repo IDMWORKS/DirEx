@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DirEx.Extensions
+namespace DirEx.Web.Extensions
 {
 	static class DnExtensions
 	{

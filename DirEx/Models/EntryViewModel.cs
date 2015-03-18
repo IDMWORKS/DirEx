@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace DirEx.Models
+namespace DirEx.Web.Models
 {
 	public class EntryViewModel
 	{

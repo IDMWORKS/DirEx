@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DirEx.Models
+namespace DirEx.Web.Models
 {
 	public class DirectoryViewModel
 	{

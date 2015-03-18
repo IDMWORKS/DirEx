@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DirEx.Models
+namespace DirEx.Web.Models
 {
 	public class ConnectViewModel
 	{

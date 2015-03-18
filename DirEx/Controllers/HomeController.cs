@@ -1,11 +1,11 @@
-﻿using DirEx.Extensions;
-using DirEx.Models;
+﻿using DirEx.Web.Extensions;
+﻿using DirEx.Web.Models;
 using System;
 using System.DirectoryServices;
 using System.Runtime.InteropServices;
 using System.Web.Mvc;
 
-namespace DirEx.Controllers
+namespace DirEx.Web.Controllers
 {
 	public class HomeController : Controller
 	{		
