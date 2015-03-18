@@ -1,0 +1,31 @@
+﻿@if (TempData[DirEx.Keys.TempData.AlertInfo] != null)
+{
+	<div class="alert alert-dismissable alert-info">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@Html.Raw(TempData[DirEx.Keys.TempData.AlertInfo].ToString())
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertSuccess] != null)
+{
+	<div class="alert alert-dismissable alert-success">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@Html.Raw(TempData[DirEx.Keys.TempData.AlertSuccess].ToString())
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertWarning] != null)
+{
+	<div class="alert alert-dismissable alert-warning">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@Html.Raw(TempData[DirEx.Keys.TempData.AlertWarning].ToString())
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertDanger] != null)
+{
+	<div class="alert alert-dismissable alert-danger">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@Html.Raw(TempData[DirEx.Keys.TempData.AlertDanger].ToString())
+	</div>
+}

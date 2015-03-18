@@ -12,6 +12,7 @@
 		@ShowTree(Model.Entries, true)
 	</section>
 	<section class="content">
+		@Html.Partial("_Alerts")
 		@if (Model.CurrentEntry != null)
 		{
 			<div class="panel panel-default">

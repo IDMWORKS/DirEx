@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="Keys\RequestParams.cs" />
     <Compile Include="Keys\SessionData.cs" />
+    <Compile Include="Keys\TempData.cs" />
     <Compile Include="Models\ConnectViewModel.cs" />
     <Compile Include="Models\DirectoryViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
@@ -180,6 +181,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Connect.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Shared\_Alerts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
