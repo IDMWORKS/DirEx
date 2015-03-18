@@ -16,9 +16,7 @@ namespace DirEx.Ldap.Extensions
 
 		public static string GetRdn(this string source, string parentDn)
 		{
-			var working = source.ParseDn().ToList();
-			parentDn.ParseDn().ForEach(pair => working.Remove(working.Last()));
-			return working.GetDn();
+			return GetRdn(source.ParseDn(), parentDn);
 		}
 
 		public static string GetRdn(this List<Tuple<string, string>> source, string parentDn)
