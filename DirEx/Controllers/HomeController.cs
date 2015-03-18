@@ -41,6 +41,7 @@ namespace DirEx.Controllers
 				}
 				catch (COMException ex)
 				{
+					TempData[Keys.TempData.AlertDanger] = "<strong>Error</strong> " + ex.Message;
 					return RedirectToAction("connect", new { host = viewModel.Host, port = viewModel.Port, baseDn = viewModel.BaseDn, userDn = viewModel.UserDn });
 				}
 			}
@@ -94,16 +95,28 @@ namespace DirEx.Controllers
 
 			var populated = false;
 			if (viewModel.EntryMap.ContainsKey(currentDn))
+			{
+				viewModel.CurrentEntry = viewModel.EntryMap[currentDn];
 				populated = viewModel.EntryMap[currentDn].Entries.Count > 0;
+			}
 
 			if (!populated)
-				PopulateDirectoryEntries(currentDn, viewModel);
+			{
+				try
+				{
+					PopulateDirectoryEntries(currentDn, viewModel);
 
-			viewModel.CurrentEntry = viewModel.EntryMap[currentDn];
+					viewModel.CurrentEntry = viewModel.EntryMap[currentDn];
 
-			// cache asset data for 30min sliding
-			HttpContext.Cache.Insert(cacheKey, viewModel, null,
-				System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30));
+					// cache asset data for 30min sliding
+					HttpContext.Cache.Insert(cacheKey, viewModel, null,
+						System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30));
+				}
+				catch (COMException ex)
+				{
+					TempData[Keys.TempData.AlertDanger] = "<strong>Error</strong> " + ex.Message;
+				}
+			}
 
 			return View(viewModel);
 		}
