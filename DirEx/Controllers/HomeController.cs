@@ -1,28 +1,77 @@
 ﻿using DirEx.Extensions;
 using DirEx.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.DirectoryServices;
+using System.Runtime.InteropServices;
 using System.Web.Mvc;
-using System.Text;
 
 namespace DirEx.Controllers
 {
 	public class HomeController : Controller
-	{
-		private const string host = "idfdemo.dev.idmworks.net";
-		private const int port = 6389;
+	{		
+		[HttpGet]
+		public ActionResult Connect(string host, int? port, string baseDn, string userDn, string password)
+		{
+			var viewModel = new ConnectViewModel
+			{
+				Host = host,
+				Port = port.HasValue ? port.Value : 389,
+				BaseDn = baseDn,
+				UserDn = userDn,
+				Password = password
+			};
 
-		private const string baseDn = "dc=system,dc=backend";
-		private const string username = "cn=Directory Manager,dc=system,dc=backend";
-		private const string password = "testpass";
+			if (!String.IsNullOrEmpty(viewModel.Password))
+				return Connect(viewModel);
 
-		private readonly string server = "LDAP://" + host + ":" + port + "/";
+			return View(viewModel);
+		}
+		
+		[HttpPost]
+		public ActionResult Connect(ConnectViewModel viewModel)
+		{
+			var entry = GetDirectoryEntry(viewModel, viewModel.BaseDn);
+			try
+			{
+				var obj = entry.NativeObject; // force bind
+				Session[Keys.SessionData.ConnectionInfo] = viewModel;
+			}
+			catch (COMException)
+			{
+				return RedirectToAction("connect", new { host = viewModel.Host, port = viewModel.Port, baseDn = viewModel.BaseDn, userDn = viewModel.UserDn });
+			}
+			return RedirectToAction("index");
+		}
+
+		[HttpPost]
+		public ActionResult Disconnect()
+		{
+			Session.Abandon();
+			return RedirectToAction("connect");
+		}
+
+		private DirectoryEntry GetDirectoryEntry(ConnectViewModel connectionInfo, string baseDn = "")
+		{
+			var dir = new DirectoryEntry(connectionInfo.GetServerUri() + baseDn);
+			if (String.IsNullOrEmpty(connectionInfo.UserDn))
+				dir.AuthenticationType = AuthenticationTypes.Anonymous;
+			else
+			{
+				dir.Username = connectionInfo.UserDn;
+				dir.Password = connectionInfo.Password;
+				dir.AuthenticationType = AuthenticationTypes.ServerBind;
+			}
+			return dir;
+		}
 
 		public ActionResult Index(string currentDn = "")
 		{
-			string cacheKey = GetDirectoryCacheKey(server, username, baseDn);
+			var connectionInfo = (ConnectViewModel)Session[Keys.SessionData.ConnectionInfo];
+			if (connectionInfo == null)
+				return RedirectToAction("connect");
+
+			var server = connectionInfo.GetServerUri();
+			string cacheKey = GetDirectoryCacheKey(server, connectionInfo.UserDn, connectionInfo.BaseDn);
 			DirectoryViewModel viewModel = new DirectoryViewModel();
 
 			viewModel.Server = server;
@@ -37,7 +86,7 @@ namespace DirEx.Controllers
 			}
 
 			if (String.IsNullOrEmpty(currentDn))
-				currentDn = baseDn;
+				currentDn = connectionInfo.BaseDn;
 
 			var populated = false;
 			if (viewModel.EntryMap.ContainsKey(currentDn))
@@ -61,16 +110,10 @@ namespace DirEx.Controllers
 		}
 
 		private void PopulateDirectoryEntries(string currentDn, DirectoryViewModel viewModel)
-		{			
-			var dir = new DirectoryEntry(server + currentDn);
-			if (String.IsNullOrEmpty(username))
-				dir.AuthenticationType = AuthenticationTypes.Anonymous;
-			else
-			{
-				dir.Username = username;
-				dir.Password = password;
-				dir.AuthenticationType = AuthenticationTypes.ServerBind;
-			}
+		{
+			var connectionInfo = (ConnectViewModel)Session[Keys.SessionData.ConnectionInfo];
+
+			var dir = GetDirectoryEntry(connectionInfo, currentDn);
 
 			var searcher = new DirectorySearcher(dir);
 			searcher.SearchScope = SearchScope.OneLevel;
@@ -82,6 +125,9 @@ namespace DirEx.Controllers
 
 		private void ApplySearchResults(DirectoryEntry dir, SearchResultCollection results, DirectoryViewModel viewModel)
 		{
+			var connectionInfo = (ConnectViewModel)Session[Keys.SessionData.ConnectionInfo];
+			var server = connectionInfo.GetServerUri();
+
 			EntryViewModel parent;
 			var currentDn = dir.Path.Substring(server.Length);
 			if (viewModel.EntryMap.ContainsKey(currentDn))
@@ -95,6 +141,8 @@ namespace DirEx.Controllers
 				parent.RelativeName = dir.Name;
 				viewModel.Entries.Add(parent);
 				viewModel.EntryMap[parent.DistinguishedName] = parent;
+
+				parent.PopulateAttributes(dir.Properties);
 			}
 
 			foreach (SearchResult result in results)
@@ -115,15 +163,7 @@ namespace DirEx.Controllers
 				parent.Entries.Add(entry);
 				viewModel.EntryMap[entry.DistinguishedName] = entry;
 
-				foreach (string name in result.Properties.PropertyNames)
-				{
-					var values = result.Properties[name];
-					foreach (object value in values)
-					{
-						var propValue = value is Byte[] ? Encoding.UTF8.GetString((Byte[])value) : value.ToString();
-						entry.AttributeValues.Add(new Tuple<string, string>(name, propValue));
-					}
-				}
+				entry.PopulateAttributes(result.Properties);
 			}
 		}
 	}

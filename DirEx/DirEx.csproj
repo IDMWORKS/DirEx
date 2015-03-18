@@ -119,6 +119,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Keys\RequestParams.cs" />
+    <Compile Include="Keys\SessionData.cs" />
+    <Compile Include="Models\ConnectViewModel.cs" />
     <Compile Include="Models\DirectoryViewModel.cs" />
     <Compile Include="Models\EntryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -167,10 +169,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Connect.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Account\" />
+    <Folder Include="Views\Connect\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

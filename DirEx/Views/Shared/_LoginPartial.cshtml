@@ -1,0 +1,11 @@
+﻿@if (Session[DirEx.Keys.SessionData.ConnectionInfo] != null)
+{
+	using (Html.BeginForm("disconnect", "home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+	{
+		@Html.AntiForgeryToken()
+
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="javascript:document.getElementById('logoutForm').submit()">Disconnect</a></li>
+		</ul>
+	}
+}

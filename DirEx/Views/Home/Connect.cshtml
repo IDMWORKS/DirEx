@@ -1,0 +1,74 @@
+﻿@model DirEx.Models.ConnectViewModel
+
+@{
+	ViewBag.Title = "Connect";
+}
+
+<div class="container row">
+	<div class="col-md-6 col-md-offset-3">
+		<section id="loginForm">
+			@using (Html.BeginForm())
+			{
+				@Html.AntiForgeryToken()
+
+				<div class="form-horizontal">
+					<h4>LDAP connection details...</h4>
+					<hr />
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<div class="form-group">
+						@Html.LabelFor(model => model.Host, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.Host, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.Host, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.Port, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.Port, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.Port, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.BaseDn, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.BaseDn, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.BaseDn, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.UserDn, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.UserDn, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.UserDn, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div class="col-md-10">
+							@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+							@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<button class="btn btn-success">
+								<i class="fa fa-sign-in">&nbsp;&nbsp;</i>Connect
+							</button>
+						</div>
+					</div>
+				</div>
+			}
+		</section>
+	</div>
+</div>
+			
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
