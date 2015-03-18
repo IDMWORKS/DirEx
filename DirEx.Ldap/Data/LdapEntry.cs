@@ -4,14 +4,14 @@ using System.DirectoryServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace DirEx.Web.Models
+namespace DirEx.Ldap.Data
 {
-	public class EntryViewModel
+	public class LdapEntry
 	{
 		public string DistinguishedName { get; set; }
 		public string RelativeName { get; set; }
 		public readonly ICollection<Tuple<string, string>> AttributeValues = new List<Tuple<string, string>>();
-		public readonly ICollection<EntryViewModel> Entries = new List<EntryViewModel>();
+		public readonly ICollection<LdapEntry> Entries = new List<LdapEntry>();
 
 		public void PopulateAttributes(ResultPropertyCollection source)
 		{

@@ -18,9 +18,16 @@ namespace DirEx.Web.Models
 			Port = 389;
 		}
 
-		public string GetServerUri()
+		public Ldap.Data.LdapConnection ToConnectionInfo()
 		{
-			return "LDAP://" + Host + ":" + Port + "/";
+			return new Ldap.Data.LdapConnection
+			{
+				Host = this.Host,
+				Port = this.Port,
+				BaseDn = this.BaseDn,
+				UserDn = this.UserDn,
+				Password = this.Password
+			};
 		}
     }
 }

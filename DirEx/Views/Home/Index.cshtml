@@ -1,7 +1,7 @@
-@using DirEx.Models
 ﻿@using DirEx.Web.Keys
+@using DirEx.Ldap.Data
 
-@model DirectoryViewModel
+@model LdapTree
 
 @{
     ViewBag.Title = Model.Server;
@@ -33,7 +33,7 @@
 	</section>
 </main>
 
-@helper ShowTree(ICollection<EntryViewModel> entries, bool root = false)
+@helper ShowTree(ICollection<LdapEntry> entries, bool root = false)
 {
 	<ul class="list-group">
 		@foreach (var entry in entries)

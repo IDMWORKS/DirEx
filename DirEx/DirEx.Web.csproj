@@ -114,7 +114,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Extensions\DnExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -122,8 +121,6 @@
     <Compile Include="Keys\SessionData.cs" />
     <Compile Include="Keys\TempData.cs" />
     <Compile Include="Models\ConnectViewModel.cs" />
-    <Compile Include="Models\DirectoryViewModel.cs" />
-    <Compile Include="Models\EntryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +187,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DirEx.Ldap\DirEx.Ldap.csproj">
+      <Project>{269ced00-9c0a-4924-963f-8426108641cd}</Project>
+      <Name>DirEx.Ldap</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
