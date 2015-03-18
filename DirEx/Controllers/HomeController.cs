@@ -30,15 +30,19 @@ namespace DirEx.Controllers
 		[HttpPost]
 		public ActionResult Connect(ConnectViewModel viewModel)
 		{
-			var entry = GetDirectoryEntry(viewModel, viewModel.BaseDn);
-			try
+			Session.Clear();
+
+			using (var entry = GetDirectoryEntry(viewModel, viewModel.BaseDn))
 			{
-				var obj = entry.NativeObject; // force bind
-				Session[Keys.SessionData.ConnectionInfo] = viewModel;
-			}
-			catch (COMException)
-			{
-				return RedirectToAction("connect", new { host = viewModel.Host, port = viewModel.Port, baseDn = viewModel.BaseDn, userDn = viewModel.UserDn });
+				try
+				{
+					entry.RefreshCache(); // force bind
+					Session[Keys.SessionData.ConnectionInfo] = viewModel;
+				}
+				catch (COMException ex)
+				{
+					return RedirectToAction("connect", new { host = viewModel.Host, port = viewModel.Port, baseDn = viewModel.BaseDn, userDn = viewModel.UserDn });
+				}
 			}
 			return RedirectToAction("index");
 		}
@@ -113,14 +117,17 @@ namespace DirEx.Controllers
 		{
 			var connectionInfo = (ConnectViewModel)Session[Keys.SessionData.ConnectionInfo];
 
-			var dir = GetDirectoryEntry(connectionInfo, currentDn);
-
-			var searcher = new DirectorySearcher(dir);
-			searcher.SearchScope = SearchScope.OneLevel;
-
-			var results = searcher.FindAll();
-
-			ApplySearchResults(dir, results, viewModel);
+			using (var dir = GetDirectoryEntry(connectionInfo, currentDn))
+			{
+				using (var searcher = new DirectorySearcher(dir))
+				{
+					searcher.SearchScope = SearchScope.OneLevel;
+					using (var results = searcher.FindAll())
+					{
+						ApplySearchResults(dir, results, viewModel);
+					}
+				}
+			}
 		}
 
 		private void ApplySearchResults(DirectoryEntry dir, SearchResultCollection results, DirectoryViewModel viewModel)
