@@ -134,6 +134,11 @@ namespace DirEx.Controllers
 			{
 				using (var searcher = new DirectorySearcher(dir))
 				{
+					// the default ClientTimeout is -1 which will wait indefinitely
+					// in practice this means that a misbehaving server will not return at all
+					// and eventually exhaust the pooled connections available in DirectoryServices
+					searcher.ClientTimeout = TimeSpan.FromSeconds(5);
+
 					searcher.SearchScope = SearchScope.OneLevel;
 					using (var results = searcher.FindAll())
 					{
