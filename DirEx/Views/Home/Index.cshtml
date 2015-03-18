@@ -38,7 +38,7 @@
 		@foreach (var entry in entries)
 		{
 			var entryExpands = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
-			var extraClass = Request.Params.AllKeys.Contains(RequestParams.CurrentDn) && Request.Params[RequestParams.CurrentDn].Equals(entry.DistinguishedName) ? "list-group-item-success" : String.Empty;
+			var extraClass = Request.Params.AllKeys.Contains(RequestParams.CurrentDn) && Request.Params[RequestParams.CurrentDn].Equals(entry.DistinguishedName) ? "list-group-item-info" : String.Empty;
 
 			<li class="list-group-item @extraClass">
 				@if (entryExpands)

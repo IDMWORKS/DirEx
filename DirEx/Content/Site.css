@@ -1,13 +1,13 @@
 ﻿body {
-	margin-top: 64px;
+	margin-top: 60px;
 }
 
 body.page-connect {
-	margin-top: 84px;
+	margin-top: 80px;
 }
 
 .navbar-logo {
-	height: 65px;
+	height: 60px;
 	float: left;
 	margin-bottom: -10px;
 	margin-right: 5px;
@@ -23,7 +23,7 @@ section > .list-group > .list-group-item:first-child {
 
 .sidebar {
   left: 0;
-  top: 64px;
+  top: 60px;
   bottom: 0;
   position: fixed;
   width: 300px;

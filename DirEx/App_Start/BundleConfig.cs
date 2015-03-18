@@ -25,7 +25,7 @@ namespace DirEx
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",
-					  "~/Content/bootstrap-paper.css",
+					  "~/Content/bootstrap-darkly.css",
 					  "~/Content/site.css"));
 		}
 	}
