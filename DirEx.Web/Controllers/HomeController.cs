@@ -72,7 +72,7 @@ namespace DirEx.Web.Controllers
 			Ldap.Data.LdapTree ldapTree = new Ldap.Data.LdapTree(connectionInfo.GetServerUri());
 
 			// key for caching tree data in the global ASP.NET cache
-			string cacheKey = String.Format("{0}-{1}-{2}", ldapTree.Server, connectionInfo.UserDn, connectionInfo.BaseDn);
+			string cacheKey = String.Format("{0}-{1}-{2}-{3}", ldapTree.Server, connectionInfo.UserDn, connectionInfo.BaseDn, connectionInfo.UserDn);
 			
 			if (!String.IsNullOrEmpty(currentDn))
 			{
