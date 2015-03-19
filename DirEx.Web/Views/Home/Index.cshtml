@@ -1,5 +1,6 @@
 ﻿@using DirEx.Web.Keys
 @using DirEx.Ldap.Data
+@using DirEx.Web.Extensions
 
 @model LdapTree
 
@@ -52,8 +53,7 @@
 			var imageClass = entry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
 				entry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
 
-			<a id="@entry.RelativeName"></a>
-			<li class="list-group-item @itemClass">
+			<li id="item@(entry.RelativeName.ToHtmlId())" class="list-group-item @itemClass">
 				@if (entryExpands)
 				{
 					<i class="fa fa-caret-down">&nbsp;</i>
@@ -63,7 +63,7 @@
 					<i class="fa fa-caret-right">&nbsp;</i>
 				}
 				<i class="fa fa-@imageClass text-muted">&nbsp;</i>
-				@Html.ActionLink(entry.RelativeName, "index", "home", protocol: null, hostName: null, fragment: entry.RelativeName, routeValues: new { currentDn = @entry.DistinguishedName }, htmlAttributes: new { @class = linkClass })
+				@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
 				@if (entryExpands)
 				{
 					@ShowTree(entry.Entries)
@@ -71,4 +71,14 @@
 			</li>
 		}
 	</ul>
+}
+
+@section scripts {
+	<script>
+		$("document").ready(function () {
+			var groupItem = $('#item@(Model.CurrentEntry.RelativeName.ToHtmlId())');
+			var top = groupItem.offset().top - 60; // offset for static header
+			$('.sidebar').animate({ scrollTop: top }, 0);
+		})
+	</script>
 }
