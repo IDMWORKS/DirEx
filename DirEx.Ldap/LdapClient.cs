@@ -1,10 +1,6 @@
 ﻿using DirEx.Ldap.Extensions;
 using System;
-using System.Collections.Generic;
 using System.DirectoryServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DirEx.Ldap
 {
@@ -78,6 +74,8 @@ namespace DirEx.Ldap
 
 				entry.PopulateAttributes(result.Properties);
 			}
+
+			parent.SortEntries();
 		}
 		
 		public DirectoryEntry GetNativeEntry(string entryDn)

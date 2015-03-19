@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ModelNames.cs" />
     <Compile Include="Extensions\DnExtensions.cs" />
     <Compile Include="Data\LdapConnection.cs" />
     <Compile Include="Data\LdapTree.cs" />

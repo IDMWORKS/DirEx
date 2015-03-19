@@ -10,10 +10,10 @@ namespace DirEx.Ldap.Data
 	{
 		public string DistinguishedName { get; set; }
 		public string RelativeName { get; set; }
-		public readonly ICollection<Tuple<string, string>> AttributeValues = new List<Tuple<string, string>>();
-		public readonly ICollection<LdapEntry> Entries = new List<LdapEntry>();
+		public readonly List<Tuple<string, string>> AttributeValues = new List<Tuple<string, string>>();
+		public readonly List<LdapEntry> Entries = new List<LdapEntry>();
 
-		public void PopulateAttributes(ResultPropertyCollection source)
+		public void PopulateAttributes(ResultPropertyCollection source, bool sort = true)
 		{
 			foreach (string name in source.PropertyNames)
 			{
@@ -24,9 +24,56 @@ namespace DirEx.Ldap.Data
 					AttributeValues.Add(new Tuple<string, string>(name, propValue));
 				}
 			}
+
+			if (sort) SortAttributes();
 		}
 
-		public void PopulateAttributes(PropertyCollection source)
+		public void SortEntries()
+		{
+			Entries.Sort((en1, en2) =>
+            {
+				return en1.RelativeName.CompareTo(en2.RelativeName);
+			});
+		}
+
+		private void SortAttributes()
+		{
+			AttributeValues.Sort((av1, av2) =>
+			{
+				int result;
+
+				// sort ObjectClass attributes to the top
+				// then sort by attribute Name
+				// then sort by attribute Value
+				var av1IsOc = av1.Item1.Equals(ModelNames.ObjectClass, StringComparison.OrdinalIgnoreCase);
+				var av2IsOc = av2.Item1.Equals(ModelNames.ObjectClass, StringComparison.OrdinalIgnoreCase);
+
+				var av1IsRdn = RelativeName.IndexOf(String.Format("{0}={1}", av1.Item1, av1.Item2), StringComparison.OrdinalIgnoreCase) >= 0;
+				var av2IsRdn = RelativeName.IndexOf(String.Format("{0}={1}", av2.Item1, av2.Item2), StringComparison.OrdinalIgnoreCase) >= 0;
+
+				if (av1.Item1.Equals(av2.Item1))
+					result = 0;
+				else if (av1IsOc)
+					result = -1;
+				else if (av2IsOc)
+					result = 1;
+				else if (av1IsRdn && av2IsRdn)
+					result = av1.Item1.CompareTo(av2.Item1);
+				else if (av1IsRdn)
+					result = -1;
+				else if (av2IsRdn)
+					result = 1;
+				else
+					result = av1.Item1.CompareTo(av2.Item1);
+
+				if (result == 0)
+					result = av1.Item2.CompareTo(av2.Item2);
+
+				return result;
+			});
+		}
+
+		public void PopulateAttributes(PropertyCollection source, bool sort = true)
 		{
 			foreach (string name in source.PropertyNames)
 			{
@@ -51,6 +98,8 @@ namespace DirEx.Ldap.Data
 					}
 				}
 			}
+
+			if (sort) SortAttributes();
 		}
 	}
 }
