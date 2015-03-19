@@ -13,6 +13,11 @@ body.page-connect {
 	margin-right: 5px;
 }
 
+a.active {
+	color: #fff !important;
+	font-weight: bold;
+}
+
 .page-index.page-home dd {
   word-break: break-all;
 }

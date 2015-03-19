@@ -42,9 +42,11 @@
 		@foreach (var entry in entries)
 		{
 			var entryExpands = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
-			var extraClass = Request.Params.AllKeys.Contains(RequestParams.CurrentDn) && Request.Params[RequestParams.CurrentDn].Equals(entry.DistinguishedName) ? "list-group-item-info" : String.Empty;
+			var entrySelected = Request.Params.AllKeys.Contains(RequestParams.CurrentDn) && Request.Params[RequestParams.CurrentDn].Equals(entry.DistinguishedName);
+			var itemClass = entrySelected ? "list-group-item-info" : String.Empty;
+			var linkClass = entrySelected ? "active" : String.Empty;
 
-			<li class="list-group-item @extraClass">
+			<li class="list-group-item @itemClass">
 				@if (entryExpands)
 				{
 					<i class="fa fa-caret-down"></i>
@@ -53,7 +55,7 @@
 				{
 					<i class="fa fa-caret-right"></i>
 				}
-				@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName })
+				@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
 				@if (entryExpands)
 				{
 					@ShowTree(entry.Entries)
