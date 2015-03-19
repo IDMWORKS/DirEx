@@ -8,7 +8,7 @@ namespace DirEx.Web.Controllers
 	public class HomeController : Controller
 	{		
 		[HttpGet]
-		public ActionResult Connect(string host, int? port, string baseDn, string userDn, string password)
+		public ActionResult Connect(string host, int? port, string baseDn, string userDn, string password, bool? anon)
 		{
 			var viewModel = new ConnectViewModel
 			{
@@ -19,7 +19,7 @@ namespace DirEx.Web.Controllers
 				Password = password
 			};
 
-			if (!String.IsNullOrEmpty(viewModel.Password))
+			if (!String.IsNullOrEmpty(viewModel.Password) || (anon.HasValue && anon.Value))
 				return Connect(viewModel);
 
 			return View(viewModel);
