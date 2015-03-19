@@ -51,7 +51,7 @@ namespace DirEx.Ldap.Data
 				var av1IsRdn = RelativeName.IndexOf(String.Format("{0}={1}", av1.Item1, av1.Item2), StringComparison.OrdinalIgnoreCase) >= 0;
 				var av2IsRdn = RelativeName.IndexOf(String.Format("{0}={1}", av2.Item1, av2.Item2), StringComparison.OrdinalIgnoreCase) >= 0;
 
-				if (av1.Item1.Equals(av2.Item1))
+				if (av1IsOc && av2IsOc)
 					result = 0;
 				else if (av1IsOc)
 					result = -1;
