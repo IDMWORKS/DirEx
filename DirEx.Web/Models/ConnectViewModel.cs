@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace DirEx.Web.Models
 {
@@ -8,7 +9,9 @@ namespace DirEx.Web.Models
 		public string Host { get; set; }
 		[Required]
 		public int Port { get; set; }
+		[DisplayName("Base DN")]
 		public string BaseDn { get; set; }
+		[DisplayName("User DN")]
 		public string UserDn { get; set; }
 		[DataType(DataType.Password)]
 		public string Password { get; set; }
