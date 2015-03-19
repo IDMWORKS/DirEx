@@ -17,7 +17,11 @@
 		{
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title"><i class="fa fa-server">&nbsp;&nbsp;</i> @Model.CurrentEntry.RelativeName</h3>
+					@{
+						var imageClass = Model.CurrentEntry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
+							Model.CurrentEntry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
+					}
+					<h3 class="panel-title"><i class="fa fa-@imageClass">&nbsp;&nbsp;</i> @Model.CurrentEntry.RelativeName</h3>
 				</div>
 				<div class="panel-body">
 					<dl class="dl-horizontal">
@@ -45,16 +49,19 @@
 			var entrySelected = Model.CurrentEntry.DistinguishedName.Equals(entry.DistinguishedName);
 			var itemClass = entrySelected ? "active" : String.Empty;
 			var linkClass = entrySelected ? "active" : String.Empty;
+			var imageClass = entry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
+				entry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
 
 			<li class="list-group-item @itemClass">
 				@if (entryExpands)
 				{
-					<i class="fa fa-caret-down"></i>
+					<i class="fa fa-caret-down">&nbsp;</i>
 				}
 				else
 				{
-					<i class="fa fa-caret-right"></i>
+					<i class="fa fa-caret-right">&nbsp;</i>
 				}
+				<i class="fa fa-@imageClass text-muted">&nbsp;</i>
 				@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
 				@if (entryExpands)
 				{

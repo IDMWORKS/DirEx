@@ -1,7 +1,10 @@
 ﻿namespace DirEx.Ldap.Data
 {
-	class ModelNames
+	public class ModelNames
 	{
-		public const string ObjectClass = "ObjectClass";
+		public const string ObjectClass = "objectClass";
+		public const string CommonName = "cn";
+		public const string OrganizationUnit = "ou";
+		public const string DomainComponent = "dc";
 	}
 }
