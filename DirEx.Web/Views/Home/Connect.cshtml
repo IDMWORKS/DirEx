@@ -61,7 +61,10 @@
 
 						<div class="form-group">
 							<div class="col-md-offset-2 col-md-10">
-								<button class="btn btn-success">
+								<a class="col-md-4 btn btn-info" href="@Url.Action("connect", new { host = "ldap.virginia.edu", baseDn = "o=University of Virginia,c=US", anon = true })">
+									<i class="fa fa-paper-plane">&nbsp;&nbsp;</i>Example
+								</a>
+								<button class="col-md-offset-1 col-md-4 btn btn-success">
 									<i class="fa fa-sign-in">&nbsp;&nbsp;</i>Connect
 								</button>
 							</div>
