@@ -59,7 +59,7 @@
 			var imageClass = entry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
 				entry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
 
-			<li id="item@(entry.RelativeName.ToHtmlId())" class="list-group-item @itemClass">
+			<li id="item@(entry.DistinguishedName.ToHtmlId())" class="list-group-item @itemClass">
 				@if (entryExpands)
 				{
 					<i class="fa fa-caret-down">&nbsp;</i>
@@ -82,7 +82,7 @@
 @section scripts {
 	<script>
 		$("document").ready(function () {
-			var groupItem = $('#item@(Model.CurrentEntry.RelativeName.ToHtmlId())');
+			var groupItem = $('#item@(Model.CurrentEntry.DistinguishedName.ToHtmlId())');
 			var top = groupItem.offset().top - 60; // offset for static header
 			$('.sidebar').animate({ scrollTop: top }, 0);
 		})
