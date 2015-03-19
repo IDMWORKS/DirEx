@@ -43,7 +43,7 @@
 		{
 			var entryExpands = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
 			var entrySelected = Model.CurrentEntry.DistinguishedName.Equals(entry.DistinguishedName);
-			var itemClass = entrySelected ? "list-group-item-info" : String.Empty;
+			var itemClass = entrySelected ? "active" : String.Empty;
 			var linkClass = entrySelected ? "active" : String.Empty;
 
 			<li class="list-group-item @itemClass">

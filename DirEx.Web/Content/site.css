@@ -18,6 +18,10 @@ body.page-connect {
 	padding-bottom: 6px;
 }
 
+.list-group-item.active, .list-group-item.active:hover {
+	background-color: #464545;
+}
+
 .list-group-item .list-group-item:first-child {
 	margin-top: 6px;
 }
