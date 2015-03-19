@@ -1,4 +1,10 @@
-﻿@if (Session[DirEx.Keys.SessionData.ConnectionInfo] != null)
+﻿@if (Session[DirEx.Keys.SessionData.ConnectionInfo] == null)
+{
+	<ul class="nav navbar-nav navbar-right">
+		<li><a class="text-warning" href="http://www.idmworks.com"><i class="fa fa-copyright"> </i> @(DateTime.Now.Year) IDMWORKS</a></li>
+	</ul>
+}
+else
 {
 	using (Html.BeginForm("disconnect", "home", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 	{
