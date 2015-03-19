@@ -64,7 +64,7 @@ namespace DirEx.Ldap
 				// not accessing child.Name directly here as the object may be a malformed LDAP entry
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
-				// may have spaces too, e.g.: "LDAP://idfdemo.dev.idmworks.net:6389/ou=as400, ou=People, dc=system,dc=backend"
+				// additionally it is much slower to retrieve result.GetDirectoryEntry().Name for each
 				var entryDn = result.Path.Substring(server.Length);
 				entry.RelativeName = entryDn.GetRdn(parent.DistinguishedName);
 
