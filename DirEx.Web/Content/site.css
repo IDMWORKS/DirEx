@@ -13,6 +13,10 @@ body.page-connect {
 	margin-right: 5px;
 }
 
+.page-index.page-home dd {
+  word-break: break-all;
+}
+
 .list-group-item:last-child {
 	margin-bottom: -15px;
 }
