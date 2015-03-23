@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DirEx.Ldap.Extensions
 {
-	static class DnExtensions
+	public static class DnExtensions
 	{
 		public static string GetRdn(this string source, string parentDn)
 		{
@@ -38,6 +38,23 @@ namespace DirEx.Ldap.Extensions
 			}
 
 			return result;
+		}
+
+		public static bool IsDn(this string source)
+		{
+			if (!source.Contains('=')) return false;
+			if (source.StartsWith("ldap://", StringComparison.OrdinalIgnoreCase)) return false;
+
+			try
+			{
+				source.ParseDn();
+			}
+			catch (ArgumentException)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		private static string GetRdn(this List<Tuple<string, string>> source, string parentDn)

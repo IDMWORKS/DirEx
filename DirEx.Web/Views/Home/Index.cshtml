@@ -1,5 +1,6 @@
 ﻿@using DirEx.Web.Keys
 @using DirEx.Ldap.Data
+@using DirEx.Ldap.Extensions
 @using DirEx.Web.Extensions
 
 @model LdapTree
@@ -31,7 +32,16 @@
 							var isRdnComponent = Model.CurrentEntry.RelativeName.IndexOf(String.Format("{0}={1}", attributeValue.Item1, attributeValue.Item2), StringComparison.OrdinalIgnoreCase) >= 0;
 
 							<dt class="@(isObjectClass ? "text-primary" : isRdnComponent ? "text-success" : "text-default")">@attributeValue.Item1</dt>
-							<dd class="@(isObjectClass ? "text-info" : isRdnComponent ? "text-success" : "text-muted")">@attributeValue.Item2</dd>
+							<dd class="@(isObjectClass ? "text-info" : isRdnComponent ? "text-success" : "text-muted")">
+							@if (attributeValue.Item2.IsDn())
+							{
+								@Html.ActionLink(attributeValue.Item2, "index", new { currentDn = attributeValue.Item2 });
+							}
+							else
+							{
+								@attributeValue.Item2
+							}
+							</dd>
 						}
 					</dl>
 				</div>
