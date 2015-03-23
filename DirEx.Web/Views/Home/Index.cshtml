@@ -19,8 +19,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					@{
-						var imageClass = Model.CurrentEntry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
-							Model.CurrentEntry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
+						var imageClass = Model.CurrentEntry.RelativeName.DnToIconClass();
 					}
 					<h3 class="panel-title"><i class="fa fa-@imageClass">&nbsp;&nbsp;</i> @Model.CurrentEntry.RelativeName</h3>
 				</div>
@@ -56,8 +55,7 @@
 			var entrySelected = Model.CurrentEntry.DistinguishedName.Equals(entry.DistinguishedName);
 			var itemClass = entrySelected ? "active" : String.Empty;
 			var linkClass = entrySelected ? "active" : String.Empty;
-			var imageClass = entry.RelativeName.StartsWith(ModelNames.DomainComponent) ? "sitemap" :
-				entry.RelativeName.StartsWith(ModelNames.OrganizationUnit) ? "users" : "user";
+			var imageClass = entry.RelativeName.DnToIconClass();
 
 			<li id="item@(entry.DistinguishedName.ToHtmlId())" class="list-group-item @itemClass">
 				@if (entryExpands)
