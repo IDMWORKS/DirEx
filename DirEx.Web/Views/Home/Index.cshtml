@@ -67,7 +67,7 @@
 					<i class="fa fa-caret-right">&nbsp;</i>
 				}
 				<i class="fa fa-@imageClass text-muted">&nbsp;</i>
-				@Html.ActionLink(entry.RelativeName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
+				@Html.ActionLink(entry.FriendlyName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
 				@if (entryExpands)
 				{
 					@ShowTree(entry.Entries)

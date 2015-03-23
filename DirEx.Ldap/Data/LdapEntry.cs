@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DirEx.Ldap.Extensions;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.Runtime.InteropServices;
@@ -9,7 +10,32 @@ namespace DirEx.Ldap.Data
 	public class LdapEntry
 	{
 		public string DistinguishedName { get; set; }
-		public string RelativeName { get; set; }
+
+		private string relativeName;
+		public string RelativeName
+		{
+			get
+			{
+				return relativeName;
+			}
+			set
+			{
+				relativeName = value;
+				SetFriendlyName();
+			}
+		}
+
+		private void SetFriendlyName()
+		{
+			var parts = relativeName.ParseDn();
+			if (parts.Count == 1)
+				FriendlyName = parts[0].Item2;
+			else
+				FriendlyName = relativeName;
+		}
+
+		public string FriendlyName { get; private set; }
+
 		public readonly List<Tuple<string, string>> AttributeValues = new List<Tuple<string, string>>();
 		public readonly List<LdapEntry> Entries = new List<LdapEntry>();
 

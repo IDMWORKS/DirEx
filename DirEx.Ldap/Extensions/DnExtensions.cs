@@ -12,7 +12,7 @@ namespace DirEx.Ldap.Extensions
 			return GetRdn(source.ParseDn(), parentDn);
 		}
 
-		private static List<Tuple<string, string>> ParseDn(this string source)
+		public static List<Tuple<string, string>> ParseDn(this string source)
 		{
 			// need to parse comma-separated key-value pairs
 			// note that values may be quoted and themselves contain commas (RFC 2253)
