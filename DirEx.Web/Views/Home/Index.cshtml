@@ -92,16 +92,16 @@
 
 @section scripts {
 	<script>
-		$("document").ready(function () {
+		$(function () {
 			@{
-				if (Model.CurrentEntry != null)
-				{
-				<text>
-				var groupItem = $('#item@(Model.CurrentEntry.DistinguishedName.ToHtmlId())');
-				var top = groupItem.offset().top - 60; // offset for static header
-				$('.sidebar').animate({ scrollTop: top }, 0);
-				</text>
-				}
+			if (Model.CurrentEntry != null)
+			{
+			<text>
+			var groupItem = $('#item@(Model.CurrentEntry.DistinguishedName.ToHtmlId())');
+			var top = groupItem.offset().top - 60; // offset for static header
+			$('.sidebar').animate({ scrollTop: top }, 0);
+			</text>
+			}
 			}
 		})
 	</script>
