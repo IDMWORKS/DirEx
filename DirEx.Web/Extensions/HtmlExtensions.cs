@@ -12,7 +12,8 @@ namespace DirEx.Web.Extensions
 		public static string DnToIconClass(this string source)
 		{
 			return source.StartsWith(ModelNames.DomainComponent + "=") ? "sitemap" :
-				source.StartsWith(ModelNames.OrganizationUnit + "=") ? "users" : "user";
+				source.StartsWith(ModelNames.OrganizationUnit + "=") ? "users" :
+				source.StartsWith(ModelNames.Organization + "=") ? "building" : "user";
         }
 	}
 }
