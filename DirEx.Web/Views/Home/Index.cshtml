@@ -35,7 +35,19 @@
 							<dd class="@(isObjectClass ? "text-info" : isRdnComponent ? "text-success" : "text-muted")">
 							@if (attributeValue.Item2.IsDn())
 							{
-								@Html.ActionLink(attributeValue.Item2, "index", new { currentDn = attributeValue.Item2.CompressDn() });
+								<i class="fa fa-bookmark">&nbsp;</i>@Html.ActionLink(attributeValue.Item2, "index", new { currentDn = attributeValue.Item2.CompressDn() });
+							}
+							else if (attributeValue.Item1.Equals(ModelNames.TelephoneNumber, StringComparison.OrdinalIgnoreCase))
+							{
+								<i class="fa fa-phone">&nbsp;</i><a href="tel:@(attributeValue.Item2)">@attributeValue.Item2</a>
+							}
+							else if (attributeValue.Item2.IsEmailAddress())
+							{
+								<i class="fa fa-envelope">&nbsp;</i><a href="mailto:@(attributeValue.Item2)">@attributeValue.Item2</a>
+							}
+							else if (attributeValue.Item1.Equals(ModelNames.ADsPath, StringComparison.OrdinalIgnoreCase))
+							{
+								<i class="fa fa-home">&nbsp;</i><a href="@Url.Action("index", new { currentDn = attributeValue.Item2.Substring(Model.Server.Length).CompressDn() })">@attributeValue.Item2</a>
 							}
 							else
 							{
