@@ -1,0 +1,16 @@
+﻿#sidebar-header {
+	margin-top: -5px;
+	margin-bottom: 25px;
+}
+
+footer > a.ui-btn-right {
+	margin-top: 3px;
+}
+
+footer {
+	padding-left: 5px;
+}
+
+.page-home.page-index .ui-alert {
+	margin-bottom: 35px;
+}

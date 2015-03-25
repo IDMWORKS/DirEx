@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDAP Client - @ViewBag.Title</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    @Styles.Render("~/Content/mobilecss")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="page-@(ViewContext.RouteData.GetRequiredString("action").ToLower()) page-@(ViewContext.RouteData.GetRequiredString("controller").ToLower())">
+	@RenderBody()
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/jquerymobile")
+	@RenderSection("scripts", required: false)
+</body>
+</html>
