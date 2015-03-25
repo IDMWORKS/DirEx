@@ -57,9 +57,12 @@ namespace DirEx.Ldap.Extensions
 			{
 				source.ParseDn();
 			}
-			catch (ArgumentException)
+			catch (TargetInvocationException ex)
 			{
-				return false;
+				if (ex.InnerException is ArgumentException)
+					return false;
+
+				throw;
 			}
 
 			return true;
