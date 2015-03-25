@@ -40,6 +40,14 @@ namespace DirEx.Ldap.Extensions
 			return result;
 		}
 
+		// take a DistinguishedName that may or may not have spaces between the comma-
+		// separated key-value-pairs and return a DistinguishedName that has no spaces
+		// between key-value-pairs
+		public static string CompressDn(this string source)
+		{
+			return source.ParseDn().GetDn();
+		}
+
 		public static bool IsDn(this string source)
 		{
 			if (!source.Contains('=')) return false;

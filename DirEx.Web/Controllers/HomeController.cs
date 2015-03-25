@@ -1,4 +1,5 @@
-﻿using DirEx.Web.Models;
+﻿using DirEx.Ldap.Extensions;
+using DirEx.Web.Models;
 using System;
 using System.Runtime.InteropServices;
 using System.Web.Mvc;
@@ -86,6 +87,9 @@ namespace DirEx.Web.Controllers
 			// default to the BaseDn specified in the connection info
 			if (String.IsNullOrEmpty(currentDn))
 				currentDn = connectionInfo.BaseDn;
+
+			// compress the DN so we can key off of it
+			currentDn = currentDn.CompressDn();
 
 			// do we need to populate this entry?
 			ldapTree.CurrentEntry = ldapTree.FindCachedEntry(currentDn);

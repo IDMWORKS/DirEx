@@ -35,7 +35,7 @@
 							<dd class="@(isObjectClass ? "text-info" : isRdnComponent ? "text-success" : "text-muted")">
 							@if (attributeValue.Item2.IsDn())
 							{
-								@Html.ActionLink(attributeValue.Item2, "index", new { currentDn = attributeValue.Item2 });
+								@Html.ActionLink(attributeValue.Item2, "index", new { currentDn = attributeValue.Item2.CompressDn() });
 							}
 							else
 							{
