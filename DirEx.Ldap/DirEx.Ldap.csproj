@@ -50,7 +50,12 @@
     <Compile Include="LdapClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CPI.DirectoryServices\CPI.DirectoryServices.csproj">
+      <Project>{a7586740-2503-41ad-aba8-eb523be17153}</Project>
+      <Name>CPI.DirectoryServices</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

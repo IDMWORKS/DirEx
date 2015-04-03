@@ -193,6 +193,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CPI.DirectoryServices\CPI.DirectoryServices.csproj">
+      <Project>{a7586740-2503-41ad-aba8-eb523be17153}</Project>
+      <Name>CPI.DirectoryServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DirEx.Ldap\DirEx.Ldap.csproj">
       <Project>{269ced00-9c0a-4924-963f-8426108641cd}</Project>
       <Name>DirEx.Ldap</Name>
@@ -212,11 +216,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2086</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/direx</IISUrl>
+          <IISUrl>http://localhost:2086/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

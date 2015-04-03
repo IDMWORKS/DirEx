@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirEx.Ldap", "DirEx.Ldap\Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirEx.Ldap.Tests", "DirEx.Ldap.Tests\DirEx.Ldap.Tests.csproj", "{3B46EF8D-3814-4620-A645-23C0D934CB51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPI.DirectoryServices", "CPI.DirectoryServices\CPI.DirectoryServices.csproj", "{A7586740-2503-41AD-ABA8-EB523BE17153}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3B46EF8D-3814-4620-A645-23C0D934CB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B46EF8D-3814-4620-A645-23C0D934CB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B46EF8D-3814-4620-A645-23C0D934CB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7586740-2503-41AD-ABA8-EB523BE17153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7586740-2503-41AD-ABA8-EB523BE17153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7586740-2503-41AD-ABA8-EB523BE17153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7586740-2503-41AD-ABA8-EB523BE17153}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

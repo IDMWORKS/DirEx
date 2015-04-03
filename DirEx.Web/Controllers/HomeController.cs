@@ -60,7 +60,6 @@ namespace DirEx.Web.Controllers
 			return RedirectToAction("connect");
 		}
 
-
 		public ActionResult Index(string currentDn = "")
 		{
 			// get cached ldapConnection
@@ -108,9 +107,12 @@ namespace DirEx.Web.Controllers
 					HttpContext.Cache.Insert(cacheKey, ldapTree, null,
 						System.Web.Caching.Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(30));
 				}
-				catch (COMException ex)
+				catch (SystemException ex)
 				{
-					TempData[Keys.TempData.AlertDanger] = "<strong>Error</strong> " + ex.Message;
+					if ((ex is ArgumentException) || (ex is COMException))
+						TempData[Keys.TempData.AlertDanger] = "<strong>Error</strong> " + ex.Message;
+					else
+						throw;
 				}
 			}
 

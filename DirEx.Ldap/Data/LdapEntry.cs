@@ -1,4 +1,5 @@
-﻿using DirEx.Ldap.Extensions;
+﻿using CPI.DirectoryServices;
+using DirEx.Ldap.Extensions;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -27,11 +28,7 @@ namespace DirEx.Ldap.Data
 
 		private void SetFriendlyName()
 		{
-			var parts = relativeName.ParseDn();
-			if (parts.Count == 1)
-				FriendlyName = parts[0].Item2;
-			else
-				FriendlyName = relativeName;
+			FriendlyName = new DN(relativeName).RDNs[0].ToFriendlyName();
 		}
 
 		public string FriendlyName { get; private set; }

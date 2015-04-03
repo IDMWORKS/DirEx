@@ -1,4 +1,5 @@
-﻿using DirEx.Ldap.Extensions;
+﻿using CPI.DirectoryServices;
+using DirEx.Ldap.Extensions;
 using System;
 using System.DirectoryServices;
 
@@ -65,8 +66,9 @@ namespace DirEx.Ldap
 				// this is currently the case with the RACF connector and ou=Aliases
 				// this will at least let us populate the entry and we can error fetching details later
 				// additionally it is much slower to retrieve result.GetDirectoryEntry().Name for each
-				var entryDn = result.Path.Substring(server.Length);
-				entry.RelativeName = entryDn.GetRdn(parent.DistinguishedName);
+				var entryDn = new DN(result.Path.Substring(server.Length));
+
+                entry.RelativeName = entryDn.RDNs[0].ToString();
 
 				entry.DistinguishedName = entry.RelativeName + "," + parent.DistinguishedName;
 				parent.Entries.Add(entry);
