@@ -1,0 +1,27 @@
+﻿@if (TempData[DirEx.Keys.TempData.AlertInfo] != null)
+{
+	<div class="ui-body ui-body-b ui-corner-all ui-alert">
+		<p><i class="fa fa-info-cirle">&nbsp;&nbsp;</i>@Html.Raw(TempData[DirEx.Keys.TempData.AlertInfo].ToString())</p>
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertSuccess] != null)
+{
+	<div class="ui-body ui-body-b ui-corner-all ui-alert">
+		<p><i class="fa fa-check-circle">&nbsp;&nbsp;</i>@Html.Raw(TempData[DirEx.Keys.TempData.AlertSuccess].ToString())</p>
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertWarning] != null)
+{
+	<div class="ui-body ui-body-b ui-corner-all ui-alert">
+		<p><i class="fa fa-exclamation-triangle">&nbsp;&nbsp;</i>@Html.Raw(TempData[DirEx.Keys.TempData.AlertWarning].ToString())</p>
+	</div>
+}
+
+@if (TempData[DirEx.Keys.TempData.AlertDanger] != null)
+{
+	<div class="ui-body ui-body-b ui-corner-all ui-alert">
+		<p><i class="fa fa-exclamation-circle">&nbsp;&nbsp;</i>@Html.Raw(TempData[DirEx.Keys.TempData.AlertDanger].ToString())</p>
+	</div>
+}

@@ -76,14 +76,14 @@
 	<ul class="list-group">
 		@foreach (var entry in entries)
 		{
-			var entryExpands = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
+			var entryExpanded = entry.Entries.Any() && (root || (Request.Params[RequestParams.CurrentDn].EndsWith(entry.DistinguishedName)));
 			var entrySelected = (Model.CurrentEntry != null) && Model.CurrentEntry.DistinguishedName.Equals(entry.DistinguishedName);
 			var itemClass = entrySelected ? "active" : String.Empty;
 			var linkClass = entrySelected ? "active" : String.Empty;
 			var imageClass = entry.RelativeName.DnToIconClass();
 
 			<li id="item@(entry.DistinguishedName.ToHtmlId())" class="list-group-item @itemClass">
-				@if (entryExpands)
+				@if (entryExpanded)
 				{
 					<i class="fa fa-caret-down">&nbsp;</i>
 				}
@@ -93,7 +93,7 @@
 				}
 				<i class="fa fa-@imageClass text-muted">&nbsp;</i>
 				@Html.ActionLink(entry.FriendlyName, "index", new { currentDn = @entry.DistinguishedName }, new { @class = linkClass })
-				@if (entryExpands)
+				@if (entryExpanded)
 				{
 					@ShowTree(entry.Entries)
 				}

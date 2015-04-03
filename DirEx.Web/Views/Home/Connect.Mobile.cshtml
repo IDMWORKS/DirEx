@@ -1,0 +1,69 @@
+﻿@model DirEx.Web.Models.ConnectViewModel
+
+@{
+	ViewBag.Title = "Connect to LDAP server";
+}
+
+<main data-role="page" id="main" data-theme="b">
+	@using (Html.BeginForm("connect", "home", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+	{
+		@Html.AntiForgeryToken()
+
+		<div class="ui-corner-all">
+			<div class="ui-bar ui-bar-b">
+				<h3><i class="fa fa-sitemap">&nbsp;&nbsp;</i> Enter your LDAP connection details</h3>
+			</div>
+			<div class="ui-body ui-body-b">
+				@Html.Partial("_Alerts")
+				@Html.ValidationSummary(true, "")
+				<div class="ui-field-contain">
+					@Html.LabelFor(model => model.Host)
+					@Html.EditorFor(model => model.Host, new { htmlAttributes = new { data_clear_btn = true } })
+					@Html.ValidationMessageFor(model => model.Host, "")
+				</div>
+
+				<div class="ui-field-contain">
+					@Html.LabelFor(model => model.Port)
+					@Html.EditorFor(model => model.Port, new { htmlAttributes = new { data_clear_btn = true } })
+					@Html.ValidationMessageFor(model => model.Port, "")
+				</div>
+
+				<div class="ui-field-contain">
+					@Html.LabelFor(model => model.BaseDn)
+					@Html.EditorFor(model => model.BaseDn, new { htmlAttributes = new { data_clear_btn = true } })
+					@Html.ValidationMessageFor(model => model.BaseDn, "")
+				</div>
+
+				<div class="ui-field-contain">
+					@Html.LabelFor(model => model.UserDn)
+					@Html.EditorFor(model => model.UserDn, new { htmlAttributes = new { data_clear_btn = true } })
+					@Html.ValidationMessageFor(model => model.UserDn, "")
+				</div>
+
+				<div class="ui-field-contain">
+					@Html.LabelFor(model => model.Password)
+					@Html.EditorFor(model => model.Password, new { htmlAttributes = new { data_clear_btn = true } })
+					@Html.ValidationMessageFor(model => model.Password, "")
+				</div>
+
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a">
+						<a class="ui-btn ui-corner-all ui-shadow" href="@Url.Action("connect", new { host = "ldap.virginia.edu", baseDn = "o=University of Virginia,c=US", anon = true })">
+							<i class="fa fa-paper-plane">&nbsp;&nbsp;</i>Example
+						</a>
+					</div>
+					<div class="ui-block-b">
+						<button class="ui-btn-active">
+							<i class="fa fa-sign-in">&nbsp;&nbsp;</i>Connect
+						</button>
+					</div>
+				</fieldset>
+
+			</div>
+		</div>
+	}
+</main>
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
